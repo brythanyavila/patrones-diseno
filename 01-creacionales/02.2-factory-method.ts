@@ -16,11 +16,11 @@
  * 	!Descripción:
   1.	Completen las clases SalesReport e InventoryReport para implementar 
       la interfaz Report, generando el contenido de cada reporte en el método generate.
-	  
+    
   2.	Implementen las clases SalesReportFactory e InventoryReportFactory 
       para crear instancias de SalesReport y InventoryReport, respectivamente.
 
-	3.	Prueben el programa generando diferentes tipos de reportes usando
+  3.	Prueben el programa generando diferentes tipos de reportes usando
       el prompt para seleccionar el tipo de reporte.
  */
 
@@ -37,17 +37,23 @@ interface Report {
 class SalesReport implements Report {
   // TODO: implementar el método e imprimir en consola:
   // 'Generando reporte de ventas...'
+  generate(): void {
+    console.log('%cGenerando reporte de ventas...', COLORS.yellow);
+  }
 }
 
 class InventoryReport implements Report {
   // TODO: implementar el método e imprimir en consola:
   // 'Generando reporte de inventario...'
+  generate(): void {
+    console.log('%cGenerando reporte de inventario...', COLORS.blue);
+  }
 }
 
 // 3. Clase Base ReportFactory con el Método Factory
 
 abstract class ReportFactory {
-  abstract createReport(): Report;
+  protected abstract createReport(): Report;
 
   generateReport(): void {
     const report = this.createReport();
@@ -59,13 +65,15 @@ abstract class ReportFactory {
 
 class SalesReportFactory extends ReportFactory {
   createReport(): Report {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
+    return new SalesReport();
   }
 }
 
 class InventoryReportFactory extends ReportFactory {
   createReport(): Report {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
+    return new InventoryReport();
   }
 }
 
@@ -75,8 +83,7 @@ function main() {
   let reportFactory: ReportFactory;
 
   const reportType = prompt(
-    '¿Qué tipo de reporte deseas? %c(sales/inventory)',
-    COLORS.red
+    '¿Qué tipo de reporte deseas? (sales/inventory)'
   );
 
   if (reportType === 'sales') {
