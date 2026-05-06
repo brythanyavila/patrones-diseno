@@ -1,3 +1,4 @@
+import { COLORS } from "../helpers/colors";
 /**
  * ! Patron Chain of Responsibility
  * Es un patrón de diseño de comportamiento que te permite pasar solicitudes
@@ -9,3 +10,83 @@
  *
  * https://refactoring.guru/es/design-patterns/chain-of-responsibility
  */
+
+interface Handler {
+  setNext(handler: Handler): Handler;
+  handle(request: string): void;
+}
+
+abstract class BaseHandler implements Handler {
+  private nextHandler?: Handler;
+
+  setNext(handler: Handler): Handler {
+    this.nextHandler = handler;
+    return handler;
+  }
+
+  handle(request: string): void {
+    if (this.nextHandler) {
+      this.nextHandler.handle(request);
+    }
+  }
+}
+
+// Soporte básico
+class BasicSupport extends BaseHandler {
+  override handle(request: string): void {
+    if (request === "básico") {
+      console.log("Soporte básico: %cResolviendo problema básico", COLORS.green);
+      return;
+    }
+
+    console.log("Soporte básico: Pasando el problema a soporte avanzado");
+    super.handle(request);
+  }
+}
+
+// Soporte avanzado
+class AdvancedSupport extends BaseHandler {
+  override handle(request: string): void {
+    if (request === "avanzado") {
+      console.log(
+        "Soporte avanzado: %cResolviendo problema avanzado",
+        COLORS.green,
+      );
+      return;
+    }
+
+    console.log("Soporte avanzado: %cPasando el problema a soporte experto", COLORS.purple);
+    super.handle(request);
+  }
+}
+
+// Soporte experto
+class ExpertSupport extends BaseHandler {
+  override handle(request: string): void {
+    if (request === "experto") {
+      console.log(
+        "Soporte experto: %cResolviendo problema experto",
+        COLORS.green,
+      );
+      return;
+    }
+
+    console.log("%cSoporte experto: No hay nada que hacer... bye bye!", COLORS.red);
+    super.handle(request);
+  }
+}
+
+function main() {
+    const basicSupport = new BasicSupport(); 
+    const advancedSupport = new AdvancedSupport(); 
+    const expertSupport = new ExpertSupport(); 
+
+    basicSupport.setNext(advancedSupport).setNext(expertSupport);
+
+    basicSupport.handle('básico');
+    basicSupport.handle('avanzado');
+    basicSupport.handle('experto');
+    basicSupport.handle('nuclear');
+}
+
+main();
