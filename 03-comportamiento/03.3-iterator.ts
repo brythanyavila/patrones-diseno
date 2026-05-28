@@ -29,10 +29,20 @@ class CardCollection {
   }
 
   //TODO: Implementación del iterador usando Symbol.iterator
-  // Symbol.iterator (): IterableIterator<Card>
+  *[Symbol.iterator](): IterableIterator<Card> {
+    yield* this.cards;
+    //TODO: El for es lo mismo que "yield* this.cards"
+    // for(const card of this.cards) {
+    //   yield card;
+    // }
+  }
 
   // TODO: Implementación del iterador usando Generadores
-  // *getCard(): IterableIterator<Card>
+  *getCard(): IterableIterator<Card> {
+    for(const card of this.cards) {
+      yield card;
+    }
+  }
 }
 
 // Código Cliente para probar el iterador

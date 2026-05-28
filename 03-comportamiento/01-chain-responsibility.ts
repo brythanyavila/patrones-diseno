@@ -1,4 +1,4 @@
-import { COLORS } from "../helpers/colors";
+import { COLORS } from "../helpers/colors.ts";
 /**
  * ! Patron Chain of Responsibility
  * Es un patrón de diseño de comportamiento que te permite pasar solicitudes
